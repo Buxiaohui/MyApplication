@@ -1,18 +1,15 @@
 package com.example.buxiaohui.myapplication.ui;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.buxiaohui.myapplication.R;
 import com.example.buxiaohui.myapplication.utils.LoginUtils;
@@ -41,6 +38,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     TextView mForget;
     @BindView(R.id.id_login)
     TextView mLogin;
+    @BindView(R.id.id_top_icon)
+    ImageView mTopImageView;
 
 
     @Override
@@ -58,6 +57,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private void init() {
+
         if (LoginUtils.isRemember() && !TextUtils.isEmpty(LoginUtils.getPsw()) && !TextUtils.isEmpty(LoginUtils.getUserName())) {
             //TODO
             //login
