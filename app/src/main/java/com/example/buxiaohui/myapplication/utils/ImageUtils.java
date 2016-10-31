@@ -51,7 +51,7 @@ public class ImageUtils {
         builder.setActualImageScaleType(ScalingUtils.ScaleType.CENTER_CROP)
                 //高宽比
                 .setDesiredAspectRatio(1.3f)
-                .setFadeDuration(6000)
+                .setFadeDuration(100)
                 //按压状态下的图
                 //.setPressedStateOverlay(Global.APP_CONTEXT.getResources().getDrawable(R.drawable.icon_press))
                 //设置圆角等属性

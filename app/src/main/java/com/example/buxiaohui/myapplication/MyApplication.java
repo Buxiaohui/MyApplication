@@ -2,6 +2,8 @@ package com.example.buxiaohui.myapplication;
 
 import android.app.Application;
 
+//import com.example.buxiaohui.myapplication.database.DaoMaster;
+import com.example.buxiaohui.myapplication.database.DbManager;
 import com.facebook.drawee.backends.pipeline.Fresco;
 
 /**
@@ -14,6 +16,7 @@ public class MyApplication extends Application {
         super.onCreate();
         Global.APP_CONTEXT = this;
         Fresco.initialize(this);
+//        DbManager.getInstance();
     }
 
     @Override

@@ -3,13 +3,16 @@ package com.example.buxiaohui.myapplication.ui;
 import android.app.Activity;
 import android.os.Bundle;
 
+import butterknife.ButterKnife;
+
 /**
  * Created by buxiaohui on 8/10/2016.
  */
-public class BaseActivity extends Activity {
+public class WelcomActivity1 extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ButterKnife.bind(this);
     }
 
     @Override
