@@ -12,7 +12,7 @@ import com.example.buxiaohui.myapplication.R;
 import com.example.buxiaohui.myapplication.bean.TestBean;
 import com.example.buxiaohui.myapplication.bean.User;
 import com.example.buxiaohui.myapplication.database.DbManager;
-import com.example.buxiaohui.myapplication.utils.ImageUtils;
+import com.example.buxiaohui.myapplication.utils.ImageFrescoUtils;
 import com.facebook.drawee.generic.RoundingParams;
 import com.facebook.drawee.view.GenericDraweeView;
 import com.google.gson.Gson;
@@ -47,9 +47,9 @@ public class MainActivity extends Activity {
     private void initImageUtils() {
         genericDraweeView0 = (GenericDraweeView) findViewById(R.id.genericDraweeView0);
         genericDraweeView1 = (GenericDraweeView) findViewById(R.id.genericDraweeView1);
-        ImageUtils.setImageUrl(genericDraweeView0, imagePath0, R.drawable.icon_failure,
+        ImageFrescoUtils.setImageUrl(genericDraweeView0, imagePath0, R.drawable.icon_failure,
                 R.drawable.icon_placeholder, R.drawable.icon_downloading, R.drawable.icon_retry, null);
-        ImageUtils.setImageUrl(genericDraweeView1, imagePath1, R.drawable.icon_failure,
+        ImageFrescoUtils.setImageUrl(genericDraweeView1, imagePath1, R.drawable.icon_failure,
                 R.drawable.icon_placeholder, R.drawable.icon_downloading, R.drawable.icon_retry, null);
         if (genericDraweeView1.getHierarchy() != null) {
             genericDraweeView1.getHierarchy().setRoundingParams(new RoundingParams()
