@@ -2,6 +2,7 @@ import javax.xml.validation.Schema
 
 apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao'
+apply plugin: 'android-apt'
 
 android {
     compileSdkVersion 23
@@ -9,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.buxiaohui.myapplication"
-        minSdkVersion 23
+        minSdkVersion 21
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -49,6 +50,7 @@ dependencies {
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
     compile 'org.greenrobot:greendao:3.2.0'
     compile 'com.jakewharton:butterknife:8.4.0'
+    apt 'com.jakewharton:butterknife-compiler:8.4.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.google.code.gson:gson:2.2.4'

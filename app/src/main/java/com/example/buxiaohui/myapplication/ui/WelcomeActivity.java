@@ -37,7 +37,7 @@ public class WelcomeActivity extends BaseActivity {
     }
 
     private void initSpalshPage() {
-        if (SharePreferenceUtil.getBoolean(SharePreferenceUtil.S_IS_FIRST_IN)) {
+        if (SharePreferenceUtil.getBoolean(SharePreferenceUtil.S_EVER_IN)) {
             initWelcomePages();
             //TODO
             //显示引导页viewpager

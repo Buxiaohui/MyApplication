@@ -9,10 +9,12 @@ public class LoginUtils {
         return SharePreferenceUtil.getBoolean(SharePreferenceUtil.S_IS_LOGIN, false);
     }
 
-    public static boolean isFirstIn() {
-        return SharePreferenceUtil.getBoolean(SharePreferenceUtil.S_IS_FIRST_IN, false);
+    public static boolean isEverIn() {
+        return SharePreferenceUtil.getBoolean(SharePreferenceUtil.S_EVER_IN, false);
     }
-
+    public static void everIn() {
+         SharePreferenceUtil.saveBoolean(SharePreferenceUtil.S_EVER_IN, true);
+    }
     public static boolean isRemember() {
         return SharePreferenceUtil.getBoolean(SharePreferenceUtil.S_IS_REMBER_LOGIN, false);
     }
@@ -21,11 +23,19 @@ public class LoginUtils {
         return SharePreferenceUtil.getBoolean(SharePreferenceUtil.S_IS_REMBER_LOGIN, false);
     }
 
-    public static String getUserName(){
+    public static String getUserName() {
         return SharePreferenceUtil.getString(SharePreferenceUtil.S_USER_NAME, "");
     }
 
-    public static String getPsw(){
+    public static String getPsw() {
         return SharePreferenceUtil.getString(SharePreferenceUtil.S_PASSWORD, "");
+    }
+
+    public static void login(String userName, String psw) {
+        //TODO
+    }
+
+    public static boolean isVisitor(){
+        return SharePreferenceUtil.getBoolean(SharePreferenceUtil.S_IS_REGISTED_USER, false);
     }
 }

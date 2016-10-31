@@ -1,16 +1,23 @@
 package com.example.buxiaohui.myapplication.ui;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.buxiaohui.myapplication.R;
 import com.example.buxiaohui.myapplication.utils.LoginUtils;
+import com.example.buxiaohui.myapplication.utils.SharePreferenceUtil;
+import com.example.buxiaohui.myapplication.utils.ToastUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -19,53 +26,75 @@ import butterknife.OnClick;
 /**
  * 注册账户
  */
-public class LoginActivity extends Activity implements View.OnClickListener {
+public class LoginActivity extends BaseActivity implements View.OnClickListener {
     @BindView(R.id.id_auto_checkbox)
-    private CheckBox mAutoCheckBox;
+    CheckBox mAutoCheckBox;
     @BindView(R.id.id_remember_checkbox)
-    private CheckBox mRememberCheckBox;
+    CheckBox mRememberCheckBox;
     @BindView(R.id.id_name_input)
     EditText mUserName;
     @BindView(R.id.id_psw_input)
     EditText mPsW;
     @BindView(R.id.id_register)
-    EditText mRegister;
+    TextView mRegister;
+    @BindView(R.id.id_forget)
+    TextView mForget;
+    @BindView(R.id.id_login)
+    TextView mLogin;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ButterKnife.bind(this);
         setContentView(R.layout.activity_login);
+        ButterKnife.bind(this);
         init();
     }
 
+    public static void open(Context context) {
+        if (context != null) {
+            context.startActivity(new Intent(context, LoginActivity.class));
+        }
+    }
 
     private void init() {
         if (LoginUtils.isRemember() && !TextUtils.isEmpty(LoginUtils.getPsw()) && !TextUtils.isEmpty(LoginUtils.getUserName())) {
             //TODO
             //login
+
         }
+        //just for test
+        //test();
 
     }
 
     @OnClick(R.id.id_register)
     public void register(View v) {
-        startActivity(new Intent(this, RegisterActivity.class));
+        ToastUtils.show("--register--");
+        RegisterActivity.open(this);
+        finish();
     }
 
-    @OnClick(R.id.id_retry)
-    public void retry(View v) {
-        //TODO
-    }
-
-    @OnClick(R.id.id_sign_out)
-    public void signout(View v) {
-        //TODO
+    @OnClick(R.id.id_visitor)
+    public void asVisitor() {
+        MainActivity.open(this);
+        finish();
     }
 
     @Override
     public void onClick(View v) {
-        
+
     }
+
+    @Override
+    protected void handleMessage(Message msg) {
+        MainActivity.open(this);
+        finish();
+    }
+
+    private void onLoginComplete(int responseCode) {
+        SharePreferenceUtil.saveBoolean(SharePreferenceUtil.S_IS_LOGIN, true);
+    }
+
+
 }

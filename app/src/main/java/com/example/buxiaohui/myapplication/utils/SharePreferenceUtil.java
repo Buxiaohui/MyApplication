@@ -11,11 +11,12 @@ import com.example.buxiaohui.myapplication.Global;
  */
 
 public class SharePreferenceUtil {
-    public final static String S_IS_FIRST_IN = "isFirstInApp";
+    public final static String S_EVER_IN = "isEverInApp";
     public final static String S_IS_REMBER_LOGIN = "isRember";
     public final static String S_IS_LOGIN = "isLogin";
     public final static String S_USER_NAME = "userName";
     public final static String S_PASSWORD = "psw";
+    public final static String S_IS_REGISTED_USER = "isRegisted";
     private static SharedPreferences s = Global.APP_CONTEXT.getSharedPreferences("TestApp", Context.MODE_PRIVATE);
 
     public static SharedPreferences getGloableSharedPreferences() {

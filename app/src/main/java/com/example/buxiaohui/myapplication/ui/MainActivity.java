@@ -1,6 +1,7 @@
 package com.example.buxiaohui.myapplication.ui;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -37,6 +38,12 @@ public class MainActivity extends Activity {
         //startActivity(new Intent(this,TestActivity.class));
     }
 
+    public static void open(Context context) {
+        if (context != null) {
+            context.startActivity(new Intent(context, MainActivity.class));
+        }
+    }
+
     private void initImageUtils() {
         genericDraweeView0 = (GenericDraweeView) findViewById(R.id.genericDraweeView0);
         genericDraweeView1 = (GenericDraweeView) findViewById(R.id.genericDraweeView1);
@@ -65,8 +72,8 @@ public class MainActivity extends Activity {
                 ArrayList<User> userArrayList = new ArrayList<User>();
                 for (int i = 0; i < 5; i++) {
                     User user = new User();
-                    user.setAge(10+i);
-                    user.setName("index"+i);
+                    user.setAge(10 + i);
+                    user.setName("index" + i);
                     user.setUserId(i);
                     //DbManager.getDaoSession().getUserDao().insert(user);
                 }
@@ -76,10 +83,10 @@ public class MainActivity extends Activity {
                     testBean.setName("testBean_index" + z);
                     //DbManager.getDaoSession().getTestBeanDao().insert(testBean);
                 }
-                TestBean testBean1= new TestBean();
+                TestBean testBean1 = new TestBean();
                 testBean1.setUserId(2);
                 testBean1.setName("test");
-                User user1= new User();
+                User user1 = new User();
                 user1.setUserId(2);
                 user1.setName("username");
                 testBean1.setUser(user1);

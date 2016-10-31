@@ -16,4 +16,11 @@
     <string name="login">登录</string>
     <string name="sign_out">注销</string>
     <string name="retry">重试</string>
+    <string name="forget_psw">忘记密码</string>
+    <string name="start_use_app">开始体验</string>
+    <string name="visitor">游客访问</string>
+    <string name="pls_input_user_num_10">请输入10位以下数字</string>
+    <string name="pls_input_psw_8_10">请输入8至10位密码</string>
+    <string name="pls_input_email">请输入邮箱地址</string>
+
 </resources>
