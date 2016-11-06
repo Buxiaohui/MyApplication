@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:paddingLeft="@dimen/activity_vertical_margin"
     android:paddingRight="@dimen/activity_vertical_margin"
-    tools:context=".ui.MainActivity">
+    tools:context=".ui.ChatWindow.MainActivity">
 
     <ImageView
         android:id="@+id/id_top_icon"

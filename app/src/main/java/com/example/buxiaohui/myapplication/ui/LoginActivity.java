@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.buxiaohui.myapplication.R;
+import com.example.buxiaohui.myapplication.ui.ChatWindow.MainActivity;
 import com.example.buxiaohui.myapplication.utils.LoginUtils;
 import com.example.buxiaohui.myapplication.utils.SharePreferenceUtil;
 import com.example.buxiaohui.myapplication.utils.ToastUtils;

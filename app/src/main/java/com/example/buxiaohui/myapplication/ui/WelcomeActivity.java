@@ -12,6 +12,7 @@ import android.widget.ImageView;
 
 import com.example.buxiaohui.myapplication.Global;
 import com.example.buxiaohui.myapplication.R;
+import com.example.buxiaohui.myapplication.ui.ChatWindow.MainActivity;
 import com.example.buxiaohui.myapplication.utils.SharePreferenceUtil;
 
 import butterknife.BindView;

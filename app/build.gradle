@@ -60,7 +60,11 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile 'io.reactivex:rxjava:1.2.1'
     compile 'io.reactivex:rxandroid:1.2.1'
-    compile "org.igniterealtime.smack:smack-android:4.1.0-rc1"
-    compile "org.igniterealtime.smack:smack-tcp:4.1.0-rc1"
-    compile "org.igniterealtime.smack:smack-android-extensions:4.1.0-rc1"
+    //compile "org.igniterealtime.smack:smack-java7:4.1.0"
+    // Optional for XMPPTCPConnection
+    compile "org.igniterealtime.smack:smack-tcp:4.1.0"
+    // Optional for XMPP-IM (RFC 6121) support (Roster, Threaded Chats, …)
+    compile "org.igniterealtime.smack:smack-im:4.1.0"
+    // Optional for XMPP extensions support
+    compile "org.igniterealtime.smack:smack-android-extensions:4.1.0"
 }

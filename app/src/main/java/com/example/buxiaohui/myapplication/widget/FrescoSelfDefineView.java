@@ -7,7 +7,7 @@ import android.net.Uri;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.example.buxiaohui.myapplication.ui.MainActivity;
+import com.example.buxiaohui.myapplication.ui.ChatWindow.MainActivity;
 import com.example.buxiaohui.myapplication.R;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.drawable.ScalingUtils;

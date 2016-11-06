@@ -1,29 +1,31 @@
 package com.example.buxiaohui.myapplication.ui;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
-import android.view.KeyEvent;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.buxiaohui.myapplication.R;
+import com.example.buxiaohui.myapplication.bean.RegisterBean;
+import com.example.buxiaohui.myapplication.ui.ChatWindow.MainActivity;
+import com.example.buxiaohui.myapplication.utils.AccountUtils;
+import com.example.buxiaohui.myapplication.utils.LogUtils;
+import com.example.buxiaohui.myapplication.utils.StringUtils;
+import com.example.buxiaohui.myapplication.utils.ToastUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.OnTextChanged;
 
 /**
  * 注册账户
  */
 public class RegisterActivity extends BaseActivity {
+    private static final String TAG = "RegisterActivity";
     @BindView(R.id.id_name_input)
     EditText mUserName;
     @BindView(R.id.id_psw_input)
@@ -41,6 +43,7 @@ public class RegisterActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         ButterKnife.bind(this);
+
     }
 
     public static void open(Context context) {
@@ -51,7 +54,12 @@ public class RegisterActivity extends BaseActivity {
 
     @OnClick(R.id.id_register)
     public void register() {
-        //TODO
+        LogUtils.D(TAG,"--register");
+        if(StringUtils.isAvailable(mUserName.getText()) && StringUtils.isAvailable(mPassWord.getText())){
+            AccountUtils.getInstance().registerAsync(new RegisterBean()
+                    .setUserName(mUserName.getText().toString()).setPsw(mPassWord.getText().toString()));
+            ToastUtils.show("register new account");
+        }
     }
 
     @OnClick(R.id.id_visitor)

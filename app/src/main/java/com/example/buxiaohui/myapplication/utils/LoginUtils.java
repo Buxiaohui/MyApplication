@@ -38,4 +38,9 @@ public class LoginUtils {
     public static boolean isVisitor(){
         return SharePreferenceUtil.getBoolean(SharePreferenceUtil.S_IS_REGISTED_USER, false);
     }
+
+    public static String getUserInfo(){
+        //TODO
+        return null;
+    }
 }

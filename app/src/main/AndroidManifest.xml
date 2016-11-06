@@ -35,7 +35,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme"></activity>
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.ChatWindow.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme"></activity>
         <activity

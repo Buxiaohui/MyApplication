@@ -1,35 +1,58 @@
 package com.example.buxiaohui.myapplication.utils;
 
+import android.widget.Toast;
+
 import com.example.buxiaohui.myapplication.Config;
+import com.example.buxiaohui.myapplication.Global;
+import com.example.buxiaohui.myapplication.bean.RegisterBean;
 import com.example.buxiaohui.myapplication.callback.AccountListener;
 
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.ConnectionListener;
+import org.jivesoftware.smack.PacketCollector;
 import org.jivesoftware.smack.ReconnectionManager;
+import org.jivesoftware.smack.SASLAuthentication;
+import org.jivesoftware.smack.SmackConfiguration;
 import org.jivesoftware.smack.SmackException;
+import org.jivesoftware.smack.StanzaListener;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
+import org.jivesoftware.smack.filter.PacketFilter;
+import org.jivesoftware.smack.filter.StanzaFilter;
+import org.jivesoftware.smack.packet.ExtensionElement;
+import org.jivesoftware.smack.packet.IQ;
+import org.jivesoftware.smack.packet.Stanza;
+import org.jivesoftware.smack.sasl.SASLAnonymous;
+import org.jivesoftware.smack.sasl.provided.SASLPlainMechanism;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
 import org.jivesoftware.smackx.iqregister.AccountManager;
+import org.jivesoftware.smackx.iqregister.packet.Registration;
 
 import java.io.IOException;
+import java.util.Map;
 
 import rx.Observable;
 import rx.Subscriber;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by buxiaohui on 11/5/16.
+ * Code is suck,I know,will improve it later
  */
 
 public class AccountUtils {
     private static final String TAG = "AccountUtils";
     private static AccountUtils instance;
     private static XMPPTCPConnection xmppConnection;
+    public static final String KEY_NAME = "name";
+    public static final String KEY_PSW = "psw";
+    public static final String KEY_EMAIL = "email";
 
     public AccountUtils() {
         super();
         xmppConnection = getConnection();
+        //connect(null);
     }
 
     public static AccountUtils getInstance() {
@@ -39,7 +62,7 @@ public class AccountUtils {
         return instance;
     }
 
-    public static void changePsw(String newPsw, AccountListener listener) {
+    public void changePsw(String newPsw, AccountListener listener) {
         try {
             AccountManager.getInstance(xmppConnection).changePassword(newPsw);
         } catch (SmackException.NoResponseException | XMPPException | SmackException.NotConnectedException e) {
@@ -49,11 +72,11 @@ public class AccountUtils {
 
     }
 
-    public static XMPPTCPConnection getConnection() {
+    public XMPPTCPConnection getConnection() {
         String server = Config.HOST_XAMPP;
         int port = Config.PORT_XAMPP;
         XMPPTCPConnectionConfiguration.Builder builder = XMPPTCPConnectionConfiguration.builder();
-        builder.setServiceName(server);
+        builder.setServiceName(Config.SERVER_NAME_XAMPP);
         builder.setHost(server);
         builder.setPort(port);
         builder.setCompressionEnabled(false);
@@ -61,10 +84,11 @@ public class AccountUtils {
         builder.setSendPresence(true);
         builder.setSecurityMode(ConnectionConfiguration.SecurityMode.disabled);
         XMPPTCPConnection connection = new XMPPTCPConnection(builder.build());
+
         return connection;
     }
 
-    public static void login(String userName, String psw, AccountListener listener) {
+    public void login(String userName, String psw, AccountListener listener) {
         try {
             xmppConnection.login(userName, psw);
         } catch (SmackException | IOException | XMPPException e) {
@@ -74,60 +98,41 @@ public class AccountUtils {
 
     }
 
-    public static void register(String userName, String psw, AccountListener listener) {
+    public int register(final RegisterBean registerBean) {
+        if (!xmppConnection.isConnected()) {
+            connect(null);
+        }
         AccountManager accountManager = AccountManager.getInstance(xmppConnection);
+
         try {
-            accountManager.createAccount(userName, psw);
+            accountManager.createAccount(registerBean.getUserName(), registerBean.getPsw());
         } catch (SmackException.NoResponseException | XMPPException | SmackException.NotConnectedException e) {
             e.printStackTrace();
             LogUtils.D(TAG, "--register createAccount error");
+            return -1;
+            //return;
         }
-
-//        Registration reg = new Registration();
-//        reg.setType(IQ.Type.set);
-//        // 设置注册到的服务器名称
-//        reg.setTo("hx1401016");
-//        // Use an anonymous inner class to define a stanza filter that returns
-//        // all stanzas that have a stanza ID of "RS145".
-//        StanzaFilter myFilter = new StanzaFilter() {
-//            public boolean accept(Stanza stanza) {
-//                return "RS145".equals(stanza.getStanzaId());
-//            }
-//        };
-//        // Create a new stanza collector using the filter we created.
-//        PacketCollector collector = xmppConnection.createPacketCollector(myFilter);
-//        try {
-//            xmppConnection.sendStanza(reg);
-//        } catch (SmackException.NotConnectedException e) {
-//            //TODO
-//            return;
-//        }
-//
-//        //获取返回信息
-//        IQ result = (IQ) collector.nextResult(SmackConfiguration.getDefaultPacketReplyTimeout());
-//        // 取消收集
-//        collector.cancel();
-//        //通过返回信息判断
-//        if (result == null) {
-//            Toast.makeText(Global.APP_CONTEXT, "服务器异常", Toast.LENGTH_SHORT).show();
-//        } else if (result.getType() == IQ.Type.error) {
-//            if (result.getError().toString().equalsIgnoreCase("conflict(409)")) {
-//                Toast.makeText(Global.APP_CONTEXT, "注册失败，用户已存在", Toast.LENGTH_SHORT).show();
-//            } else {
-//                Toast.makeText(Global.APP_CONTEXT, "注册失败", Toast.LENGTH_SHORT).show();
-//            }
-//        } else if (result.getType() == IQ.Type.result) {
-//            Toast.makeText(Global.APP_CONTEXT, "注册成功", Toast.LENGTH_SHORT).show();
-//        }
+        return 0;
     }
 
 
-    public static void connect(AccountListener listener) {
+    public void connect(AccountListener listener) {
         XMPPTCPConnection.setUseStreamManagementDefault(true);
 
         // Enable automatic reconnection
         ReconnectionManager.getInstanceFor(xmppConnection).enableAutomaticReconnection();
-
+        xmppConnection.addPacketSendingListener(new StanzaListener() {
+            @Override
+            public void processPacket(Stanza packet) throws SmackException.NotConnectedException {
+                LogUtils.D(TAG, "processPacket:" + packet.getFrom());
+            }
+        }, new StanzaFilter() {
+            @Override
+            public boolean accept(Stanza stanza) {
+                LogUtils.D(TAG, "accept:" + stanza.getFrom());
+                return false;
+            }
+        });
         // Handle reconnection and connection errors
         xmppConnection.addConnectionListener(new ConnectionListener() {
 
@@ -177,7 +182,7 @@ public class AccountUtils {
 
         try {
             xmppConnection.connect();
-            xmppConnection.login();
+            //xmppConnection.login();
         } catch (SmackException | IOException | XMPPException e) {
             e.printStackTrace();
             LogUtils.D(TAG, "--connect error");
@@ -191,5 +196,43 @@ public class AccountUtils {
 
             }
         });
+    }
+
+    public void disconnect() {
+        if (xmppConnection != null) {
+            xmppConnection.disconnect();
+        }
+    }
+
+    public void registerAsync(final RegisterBean registerBean) {
+        Observable o = Observable.create(new Observable.OnSubscribe<Object>() {
+            @Override
+            public void call(Subscriber<? super Object> subscriber) {
+                LogUtils.D(TAG, "---registerAsync currentThread:" + Thread.currentThread().getName());
+                int result = register(registerBean);
+                LogUtils.D(TAG, "---registerAsync call:" + result);
+
+            }
+        }).subscribeOn(Schedulers.io());
+
+        Subscriber<Object> s = new Subscriber<Object>() {
+            @Override
+            public void onNext(Object o) {
+                LogUtils.D(TAG, "---onNext");
+            }
+
+            @Override
+            public void onCompleted() {
+                LogUtils.D(TAG, "---onCompleted");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                LogUtils.D(TAG, "---onError e:" + e.toString());
+
+            }
+        };
+        o.subscribe(s);
+
     }
 }
