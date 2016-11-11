@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 
+import com.example.buxiaohui.myapplication.Config;
 import com.example.buxiaohui.myapplication.R;
 import com.example.buxiaohui.myapplication.utils.LoginUtils;
 import com.example.buxiaohui.myapplication.utils.SharePreferenceUtil;
@@ -17,7 +18,7 @@ public class SplashActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_spalsh);
-        mDelayHandler.sendEmptyMessageDelayed(1, 2000);
+        mDelayHandler.sendEmptyMessageDelayed(1, Config.SPLASH_DELAY_TIME);
     }
 
     Handler mDelayHandler = new Handler() {

@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.example.buxiaohui.myapplication.ui.ChatWindow.MainActivity;
 import com.example.buxiaohui.myapplication.R;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.drawable.ScalingUtils;
@@ -21,24 +20,41 @@ import com.facebook.drawee.view.MultiDraweeHolder;
  * Created by buxiaohui on 5/10/2016.
  */
 public class FrescoSelfDefineView extends View {
+    public static String imagePath0 = "http://imgsrc.baidu.com/forum/w%3D580/sign=774fb1f88f1001e94e3c1407880f7b06/cb1349540923dd5482cd5f79d309b3de9c824861.jpg";
+    public static String imagePath1 = "http://c.hiphotos.baidu.com/image/pic/item/503d269759ee3d6d27b00fed46166d224f4adea6.jpg";
+    public static String imagePath2 = "http://c.hiphotos.baidu.com/image/pic/item/a71ea8d3fd1f413465c48d58201f95cad1c85e21.jpg";
+    public static String imagePath3 = "http://c.hiphotos.baidu.com/image/pic/item/9e3df8dcd100baa1cfc1cf9d4210b912c8fc2e22.jpg";
     MultiDraweeHolder<GenericDraweeHierarchy> mMultiDraweeHolder;
     DraweeHolder<GenericDraweeHierarchy> draweeHolder0;
     DraweeHolder<GenericDraweeHierarchy> draweeHolder1;
     DraweeHolder<GenericDraweeHierarchy> draweeHolder2;
     DraweeHolder<GenericDraweeHierarchy> draweeHolder3;
-
     DraweeController controller0;
     DraweeController controller1;
     DraweeController controller2;
     DraweeController controller3;
-
     private boolean mIsSingle;
 
+    public FrescoSelfDefineView(Context context) {
+        super(context);
+        init(context);
+    }
+
+    public FrescoSelfDefineView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init(context);
+    }
+
+    public FrescoSelfDefineView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        init(context);
+    }
+
     private void init(Context context) {
-        Uri uri0 = Uri.parse(MainActivity.imagePath0);
-        Uri uri1 = Uri.parse(MainActivity.imagePath1);
-        Uri uri2 = Uri.parse(MainActivity.imagePath2);
-        Uri uri3 = Uri.parse(MainActivity.imagePath3);
+        Uri uri0 = Uri.parse(imagePath0);
+        Uri uri1 = Uri.parse(imagePath1);
+        Uri uri2 = Uri.parse(imagePath2);
+        Uri uri3 = Uri.parse(imagePath3);
         GenericDraweeHierarchy hierarchy0 = new GenericDraweeHierarchyBuilder(getResources())
                 .setFadeDuration(R.drawable.icon_downloading)
                 .setActualImageScaleType(ScalingUtils.ScaleType.CENTER_CROP)
@@ -105,21 +121,6 @@ public class FrescoSelfDefineView extends View {
 
     public boolean getState() {
         return mIsSingle;
-    }
-
-    public FrescoSelfDefineView(Context context) {
-        super(context);
-        init(context);
-    }
-
-    public FrescoSelfDefineView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init(context);
-    }
-
-    public FrescoSelfDefineView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        init(context);
     }
 
     @Override

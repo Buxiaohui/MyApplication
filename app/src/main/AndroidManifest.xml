@@ -50,6 +50,10 @@
             android:name=".ui.TestActivity"
             android:screenOrientation="portrait"
             android:theme="@style/PreferenceTheme"></activity>
+        <activity
+            android:name=".ui.ChatWindow.MainActivityTest"
+            android:screenOrientation="portrait"
+            android:theme="@style/PreferenceTheme"></activity>
     </application>
 
 </manifest>

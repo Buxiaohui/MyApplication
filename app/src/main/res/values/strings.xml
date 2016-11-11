@@ -23,4 +23,13 @@
     <string name="pls_input_psw_8_10">请输入8至10位密码</string>
     <string name="pls_input_email">请输入邮箱地址</string>
 
+    <!-- drawer  -->
+    <string name="drawer_open">打开drawer</string>
+    <string name="drawer_close"> 关闭drawer</string>
+
+
+    <!-- bottom tab-->
+    <string name="tab_left">消息</string>
+    <string name="tab_right">联系人</string>
+
 </resources>

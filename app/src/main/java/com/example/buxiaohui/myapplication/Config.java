@@ -13,4 +13,6 @@ public class Config {
     public static final int PORT_XAMPP= 5222;
     public static final String SERVER_NAME_XAMPP= "bxhs-MacBook-Pro.local";
 
+    public static final int SPLASH_DELAY_TIME = 0;
+
 }
