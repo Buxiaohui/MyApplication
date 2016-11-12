@@ -1,5 +1,3 @@
-import javax.xml.validation.Schema
-
 apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao'
 apply plugin: 'android-apt'
@@ -29,7 +27,7 @@ greendao {
     // 数据库schema版本，也可以理解为数据库版本号
     schemaVersion 1
     //  设置DaoMaster 、DaoSession、Dao包名
-    daoPackage  'com.example.buxiaohui.myapplication.database'
+    daoPackage 'com.example.buxiaohui.myapplication.database'
     //  设置DaoMaster 、DaoSession、Dao目录
     targetGenDir 'src/main/java'
     //  设置生成单元测试目录
@@ -42,6 +40,7 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.2.0'
+    compile 'com.android.support:recyclerview-v7:23.0.+'
     compile 'com.facebook.fresco:fresco:0.12.0'
     compile 'com.facebook.fresco:animated-gif:0.12.0'
     compile 'com.squareup.okhttp3:okhttp:3.4.1'
@@ -61,10 +60,13 @@ dependencies {
     compile 'io.reactivex:rxjava:1.2.1'
     compile 'io.reactivex:rxandroid:1.2.1'
     //compile "org.igniterealtime.smack:smack-java7:4.1.0"
+
     // Optional for XMPPTCPConnection
-    compile "org.igniterealtime.smack:smack-tcp:4.1.0"
+    compile 'org.igniterealtime.smack:smack-tcp:4.1.4'
     // Optional for XMPP-IM (RFC 6121) support (Roster, Threaded Chats, …)
-    compile "org.igniterealtime.smack:smack-im:4.1.0"
+    compile 'org.igniterealtime.smack:smack-im:4.1.4'
     // Optional for XMPP extensions support
-    compile "org.igniterealtime.smack:smack-android-extensions:4.1.0"
+    compile 'org.igniterealtime.smack:smack-android-extensions:4.1.4'
+    compile 'org.igniterealtime.smack:smack-experimental:4.1.4'
+    compile 'org.igniterealtime.smack:smack-core:4.1.4'
 }

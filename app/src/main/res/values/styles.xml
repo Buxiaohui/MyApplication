@@ -10,7 +10,13 @@
 
     <style name="PreferenceTheme" parent="Base.Theme.AppCompat.Light"></style>
 
-    <style name="BaseTheme" parent="Theme.AppCompat.Light"></style>
+    <style name="BaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="drawerArrowStyle">@style/AppTheme.DrawerArrowToggle</item>
+    </style>
+
+    <style name="AppTheme.DrawerArrowToggle" parent="Base.Widget.AppCompat.DrawerArrowToggle">
+        <item name="color">@android:color/white</item>
+    </style>
 
     <style name="BackTheme" parent="BaseTheme"></style>
 </resources>

@@ -37,7 +37,8 @@
         <activity
             android:name=".ui.ChatWindow.MainActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/BaseTheme"></activity>
+            android:theme="@style/BaseTheme"
+            android:windowSoftInputMode="adjustPan"></activity>
         <activity
             android:name=".ui.LoginActivity"
             android:screenOrientation="portrait"
@@ -54,6 +55,19 @@
             android:name=".ui.ChatWindow.MainActivityTest"
             android:screenOrientation="portrait"
             android:theme="@style/PreferenceTheme"></activity>
+        <activity
+            android:name=".ui.AddActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/BackTheme">
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+        <activity android:name=".ui.SearchResultsActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

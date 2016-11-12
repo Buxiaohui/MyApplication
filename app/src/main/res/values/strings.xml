@@ -31,5 +31,9 @@
     <!-- bottom tab-->
     <string name="tab_left">消息</string>
     <string name="tab_right">联系人</string>
+    <!-- menu-->
+    <string name="menu_more_add">加好友</string>
+    <string name="menu_more_test">test</string>
+    <string name="hint_search">开始搜索吧！</string>
 
 </resources>

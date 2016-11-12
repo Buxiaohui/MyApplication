@@ -3,17 +3,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@android:color/white"
+    android:orientation="vertical"
     tools:context=".ui.ChatWindow.MainActivity">
 
-
-    <ListView
-        android:id="@+id/message_listview"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/refresh_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/holo_green_dark"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="0dp" />
+        android:layout_height="match_parent">
 
+        <android.support.v7.widget.RecyclerView
+            android:id="@android:id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:cacheColorHint="@null"
+            android:scrollbars="vertical" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

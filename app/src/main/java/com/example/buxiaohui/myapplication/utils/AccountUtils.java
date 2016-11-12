@@ -1,36 +1,28 @@
 package com.example.buxiaohui.myapplication.utils;
 
-import android.widget.Toast;
-
 import com.example.buxiaohui.myapplication.Config;
-import com.example.buxiaohui.myapplication.Global;
 import com.example.buxiaohui.myapplication.bean.RegisterBean;
 import com.example.buxiaohui.myapplication.callback.AccountListener;
 
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.ConnectionListener;
-import org.jivesoftware.smack.PacketCollector;
 import org.jivesoftware.smack.ReconnectionManager;
-import org.jivesoftware.smack.SASLAuthentication;
-import org.jivesoftware.smack.SmackConfiguration;
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.StanzaListener;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
-import org.jivesoftware.smack.filter.PacketFilter;
+import org.jivesoftware.smack.chat.Chat;
+import org.jivesoftware.smack.chat.ChatManager;
 import org.jivesoftware.smack.filter.StanzaFilter;
-import org.jivesoftware.smack.packet.ExtensionElement;
-import org.jivesoftware.smack.packet.IQ;
 import org.jivesoftware.smack.packet.Stanza;
-import org.jivesoftware.smack.sasl.SASLAnonymous;
-import org.jivesoftware.smack.sasl.provided.SASLPlainMechanism;
+import org.jivesoftware.smack.roster.Roster;
+import org.jivesoftware.smack.roster.RosterEntry;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
 import org.jivesoftware.smackx.iqregister.AccountManager;
-import org.jivesoftware.smackx.iqregister.packet.Registration;
 
 import java.io.IOException;
-import java.util.Map;
+import java.util.Set;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -42,17 +34,16 @@ import rx.schedulers.Schedulers;
  */
 
 public class AccountUtils {
-    private static final String TAG = "AccountUtils";
-    private static AccountUtils instance;
-    private static XMPPTCPConnection xmppConnection;
     public static final String KEY_NAME = "name";
     public static final String KEY_PSW = "psw";
     public static final String KEY_EMAIL = "email";
+    private static final String TAG = "AccountUtils";
+    private static AccountUtils instance;
+    private static XMPPTCPConnection xmppConnection;
 
     public AccountUtils() {
         super();
         xmppConnection = getConnection();
-        //connect(null);
     }
 
     public static AccountUtils getInstance() {
@@ -88,35 +79,39 @@ public class AccountUtils {
         return connection;
     }
 
-    public void login(String userName, String psw, AccountListener listener) {
-        try {
-            xmppConnection.login(userName, psw);
-        } catch (SmackException | IOException | XMPPException e) {
-            e.printStackTrace();
-            LogUtils.D(TAG, "--connect error");
+    public void login(String userName, String psw) {
+        if (isConnected()) {
+            try {
+                xmppConnection.login(userName, psw);
+            } catch (SmackException | IOException | XMPPException e) {
+                e.printStackTrace();
+                LogUtils.D(TAG, "--connect error");
+            }
+        } else {
+            ToastUtils.show("not connected!");
         }
 
     }
 
     public int register(final RegisterBean registerBean) {
-        if (!xmppConnection.isConnected()) {
-            connect(null);
-        }
-        AccountManager accountManager = AccountManager.getInstance(xmppConnection);
+        if (isConnected()) {
+            AccountManager accountManager = AccountManager.getInstance(xmppConnection);
 
-        try {
-            accountManager.createAccount(registerBean.getUserName(), registerBean.getPsw());
-        } catch (SmackException.NoResponseException | XMPPException | SmackException.NotConnectedException e) {
-            e.printStackTrace();
-            LogUtils.D(TAG, "--register createAccount error");
-            return -1;
-            //return;
+            try {
+                accountManager.createAccount(registerBean.getUserName(), registerBean.getPsw());
+            } catch (SmackException.NoResponseException | XMPPException | SmackException.NotConnectedException e) {
+                e.printStackTrace();
+                LogUtils.D(TAG, "--register createAccount error");
+                return -1;
+                //return;
+            }
+            return 0;
         }
-        return 0;
+        return -1;
     }
 
 
-    public void connect(AccountListener listener) {
+    public boolean connect(AccountListener listener) {
         XMPPTCPConnection.setUseStreamManagementDefault(true);
 
         // Enable automatic reconnection
@@ -183,10 +178,13 @@ public class AccountUtils {
         try {
             xmppConnection.connect();
             //xmppConnection.login();
+            return true;
         } catch (SmackException | IOException | XMPPException e) {
             e.printStackTrace();
             LogUtils.D(TAG, "--connect error");
+
         }
+        return false;
     }
 
     public void test() {
@@ -235,4 +233,137 @@ public class AccountUtils {
         o.subscribe(s);
 
     }
+
+    public void loginAsync(final String userName, final String psw) {
+        Observable o = Observable.create(new Observable.OnSubscribe<Object>() {
+            @Override
+            public void call(Subscriber<? super Object> subscriber) {
+                login(userName, psw);
+
+            }
+        }).subscribeOn(Schedulers.io());
+
+        Subscriber<Object> s = new Subscriber<Object>() {
+            @Override
+            public void onNext(Object o) {
+                LogUtils.D(TAG, "---onNext");
+            }
+
+            @Override
+            public void onCompleted() {
+                LogUtils.D(TAG, "---onCompleted");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                LogUtils.D(TAG, "---onError e:" + e.toString());
+
+            }
+        };
+        o.subscribe(s);
+
+    }
+
+    public void getContacts() {
+        //Roster roster = ((XMPPConnection)getConnection()).get
+    }
+
+    public boolean isConnected() {
+        if (xmppConnection == null) {
+            return false;
+        }
+        if (!xmppConnection.isConnected()) {
+            return connect(null);
+        }
+        return true;
+
+    }
+
+    /**
+     * 获取账户所有属性信息
+     */
+    public Set getAccountAttributes() {
+        if (isConnected()) {
+            try {
+                return AccountManager.getInstance(xmppConnection).getAccountAttributes();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+        throw new NullPointerException("服务器连接失败，请先连接服务器");
+    }
+
+    /**
+     * 获取当前登录用户的所有好友信息
+     *
+     * @return
+     */
+    public Set getAllFriends() {
+        if (isConnected()) {
+            return Roster.getInstanceFor(xmppConnection).getEntries();
+        }
+        throw new NullPointerException("服务器连接失败，请先连接服务器");
+    }
+
+    /**
+     * 获取指定账号的好友信息
+     */
+    public RosterEntry getFriend(String user) {
+        if (isConnected()) {
+            return Roster.getInstanceFor(xmppConnection).getEntry(user);
+        }
+        throw new NullPointerException("服务器连接失败，请先连接服务器");
+    }
+
+
+    /**
+     * 添加好友
+     *
+     * @param user      用户账号
+     * @param nickName  用户昵称
+     * @param groupName 所属组名
+     * @return
+     */
+    public boolean addFriend(String user, String nickName, String groupName) {
+        if (isConnected()) {
+            try {
+                Roster.getInstanceFor(xmppConnection).createEntry(user, nickName, new String[]{groupName});
+                return true;
+            } catch (SmackException.NotLoggedInException | SmackException.NoResponseException | XMPPException.XMPPErrorException
+                    | SmackException.NotConnectedException e) {
+                return false;
+            }
+        }
+        throw new NullPointerException("服务器连接失败，请先连接服务器");
+    }
+
+    /**
+     * 注销
+     *
+     * @return
+     */
+    public boolean logout() {
+        if (!isConnected()) {
+            return false;
+        }
+        try {
+            xmppConnection.instantShutdown();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * 创建聊天窗口
+     */
+    public Chat createChat(String jid) {
+        if (isConnected()) {
+            ChatManager chatManager = ChatManager.getInstanceFor(xmppConnection);
+            return chatManager.createChat(jid);
+        }
+        throw new NullPointerException("服务器连接失败，请先连接服务器");
+    }
+
 }

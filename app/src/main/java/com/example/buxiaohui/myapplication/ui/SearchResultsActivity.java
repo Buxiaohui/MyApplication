@@ -1,4 +1,4 @@
-package com.example.buxiaohui.myapplication.ui.ChatWindow;
+package com.example.buxiaohui.myapplication.ui;
 
 import android.app.SearchManager;
 import android.content.Context;
@@ -26,13 +26,15 @@ import android.widget.TabHost;
 import android.widget.TextView;
 
 import com.example.buxiaohui.myapplication.R;
+import com.example.buxiaohui.myapplication.ui.ChatWindow.ContctListFragment;
+import com.example.buxiaohui.myapplication.ui.ChatWindow.MessageListFragment;
 import com.example.buxiaohui.myapplication.utils.LogUtils;
 import com.example.buxiaohui.myapplication.utils.ToastUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements TabHost.OnTabChangeListener {
+public class SearchResultsActivity extends AppCompatActivity implements TabHost.OnTabChangeListener {
     public static String TAG = "MainActivity";
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
@@ -50,11 +52,10 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
 
     private int[] tabTitles = {R.string.tab_left, R.string.tab_right};
     private int[] tabIcons = {R.drawable.icon_bottom_message_tab, R.drawable.icon_bottom_contact_tab};
-    private SearchView searchView;
 
     public static void open(Context context) {
         if (context != null) {
-            context.startActivity(new Intent(context, MainActivity.class));
+            context.startActivity(new Intent(context, SearchResultsActivity.class));
         }
     }
 
@@ -155,32 +156,12 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main_page, menu);
-        SearchView search = (SearchView) menu.findItem(R.id.search).getActionView();
-        if (search != null) {
-            SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-
-            search.setSearchableInfo(manager.getSearchableInfo(getComponentName()));
-
-            search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextSubmit(String query) {
-                    //TODO
-                    LogUtils.D(TAG, "onQueryTextSubmit query=" + query);
-                    return false;
-                }
-
-                @Override
-                public boolean onQueryTextChange(String query) {
-                    LogUtils.D(TAG, "onQueryTextChange query=" + query);
-                    //TODO
-                    return true;
-
-                }
-
-            });
-        }
-
-
+        SearchManager searchManager =
+                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView =
+                (SearchView) menu.findItem(R.id.search).getActionView();
+        searchView.setSearchableInfo(
+                searchManager.getSearchableInfo(getComponentName()));
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -193,19 +174,19 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
         LogUtils.D(TAG, "item.getItemId()=" + item.getItemId());
         switch (item.getItemId()) {
             case R.id.search:
-                //ToastUtils.show("处理一级菜单search..");
+                ToastUtils.show("处理一级菜单search..");
                 break;
             case R.id.share:
-                //ToastUtils.show("处理一级菜单share..");
+                ToastUtils.show("处理一级菜单share..");
                 break;
             case R.id.more:
-                //ToastUtils.show("处理一级菜单more..");
+                ToastUtils.show("处理一级菜单more..");
                 break;
             case R.id.add:
-                //ToastUtils.show("处理二级菜单add..");
+                ToastUtils.show("处理二级菜单add..");
                 break;
             case R.id.test:
-                //ToastUtils.show("处理二级菜单test..");
+                ToastUtils.show("处理二级菜单test..");
                 break;
             default:
                 break;
