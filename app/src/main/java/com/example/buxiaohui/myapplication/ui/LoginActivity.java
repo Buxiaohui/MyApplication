@@ -93,9 +93,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
     @OnClick(R.id.id_login)
     public void login() {
-        if (StringUtils.isAvailable(mPsW.getText()) && StringUtils.isAvailable(mUserName.getText())) {
-            AccountUtils.getInstance().loginAsync(mUserName.getText().toString(), mPsW.getText().toString());
-        }
+//        if (StringUtils.isAvailable(mPsW.getText()) && StringUtils.isAvailable(mUserName.getText())) {
+//            AccountUtils.getInstance().loginAsync(mUserName.getText().toString(), mPsW.getText().toString());
+//        }
+        AccountUtils.getInstance().loginAsync("test01", "123");
 
     }
 

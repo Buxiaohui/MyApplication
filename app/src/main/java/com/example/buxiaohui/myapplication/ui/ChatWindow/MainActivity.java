@@ -26,6 +26,7 @@ import android.widget.TabHost;
 import android.widget.TextView;
 
 import com.example.buxiaohui.myapplication.R;
+import com.example.buxiaohui.myapplication.ui.AddActivity;
 import com.example.buxiaohui.myapplication.utils.LogUtils;
 import com.example.buxiaohui.myapplication.utils.ToastUtils;
 
@@ -202,7 +203,8 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
                 //ToastUtils.show("处理一级菜单more..");
                 break;
             case R.id.add:
-                //ToastUtils.show("处理二级菜单add..");
+                ToastUtils.show("处理二级菜单add..");
+                AddActivity.open(this);
                 break;
             case R.id.test:
                 //ToastUtils.show("处理二级菜单test..");
