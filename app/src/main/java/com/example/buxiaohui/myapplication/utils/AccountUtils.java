@@ -72,7 +72,6 @@ public class AccountUtils {
 
     public AccountUtils() {
         super();
-        //xmppConnection = getConnection();
     }
 
     public static AccountUtils getInstance() {
@@ -520,20 +519,21 @@ public class AccountUtils {
         if (isConnected()) {
             LogUtils.D(TAG, "---searchUsers xmppConnection.isAuthenticated()=" + xmppConnection.isAuthenticated());
 
-            if (xmppConnection.isAuthenticated()) {
-                login("test01","123");
-            }
+//            if (xmppConnection.isAuthenticated()) {
+//                login("test01","123");
+//            }
             List<Account> results = new ArrayList<Account>();
             try {
                 //new ServiceDiscoveryManager(xmppConnection);
                 UserSearchManager usm = new UserSearchManager(xmppConnection);
                 String serverDomain = "search." + xmppConnection.getServiceName();
-                LogUtils.D(TAG, "---searchUsers serverDomain=" + serverDomain);
-                LogUtils.D(TAG, "---searchUsers xmppConnection.getUser()=" + xmppConnection.getUser());
                 Form searchForm = usm.getSearchForm(serverDomain);
+                LogUtils.D(TAG, "---searchUsers searchForm="+searchForm);
                 Form answerForm = searchForm.createAnswerForm();
                 //answerForm.setAnswer("Username", true);
-                answerForm.setAnswer("userName", userName);
+                answerForm.setAnswer("Username", true);
+                answerForm.setAnswer("Name", true);
+                answerForm.setAnswer("search", userName);
                 ReportedData data = usm.getSearchResults(answerForm, serverDomain);
 
                 List<ReportedData.Row> list = data.getRows();

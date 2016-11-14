@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.text.TextUtils;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -46,6 +48,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     TextView mLogin;
     @BindView(R.id.id_top_icon)
     ImageView mTopImageView;
+    @BindView(R.id.id_eye)
+    ImageView mEye;
 
     public static void open(Context context) {
         if (context != null) {
@@ -93,11 +97,20 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
     @OnClick(R.id.id_login)
     public void login() {
-//        if (StringUtils.isAvailable(mPsW.getText()) && StringUtils.isAvailable(mUserName.getText())) {
-//            AccountUtils.getInstance().loginAsync(mUserName.getText().toString(), mPsW.getText().toString());
-//        }
-        AccountUtils.getInstance().loginAsync("test01", "123");
+        if (StringUtils.isAvailable(mPsW.getText()) && StringUtils.isAvailable(mUserName.getText())) {
+            AccountUtils.getInstance().loginAsync(mUserName.getText().toString(), mPsW.getText().toString());
+        }
 
+    }
+
+    @OnClick(R.id.id_eye)
+    public void onEyeClick() {
+        mEye.setSelected(!mEye.isSelected());
+        if (!mEye.isSelected()) {
+            mPsW.setTransformationMethod(PasswordTransformationMethod.getInstance());
+        } else {
+            mPsW.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+        }
     }
 
     @Override

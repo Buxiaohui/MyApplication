@@ -45,7 +45,6 @@ public class AddActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         init();
         AccountUtils.getInstance().searchUsersSync("bxh");
-        //AccountUtils.getInstance().getAllFriendsSync();
     }
 
     @Override
