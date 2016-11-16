@@ -56,13 +56,13 @@
             android:screenOrientation="portrait"
             android:theme="@style/PreferenceTheme"></activity>
         <activity
-            android:name=".ui.AddActivity"
+            android:name=".ui.AddUserActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/BackTheme">
-            <meta-data
-                android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
-        </activity>
+            android:theme="@style/BackTheme"></activity>
+        <activity
+            android:name=".ui.AddGroupActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/BackTheme"></activity>
         <activity android:name=".ui.SearchResultsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />

@@ -517,6 +517,71 @@ public class AccountUtils {
         throw new NullPointerException("服务器连接失败，请先连接服务器");
     }
 
+    /**
+     * all groups
+     */
+    public List<RosterGroup> searchAllGroups() {
+        LogUtils.D(TAG, "-----searchGroups");
+        if (isConnected()) {
+            try {
+                Collection<RosterGroup> list = Roster.getInstanceFor(xmppConnection).getGroups();
+                List<RosterGroup> list1 = new ArrayList<RosterGroup>();
+                Iterator<RosterGroup> i = list.iterator();
+                while (i.hasNext()) {
+                    RosterGroup group = i.next();
+                    if (group != null) {
+                        list1.add(group);
+                        LogUtils.D(TAG, "searchGroups=" + group.getName());
+                    }
+                }
+                return list1;
+            } catch (Exception e) {
+                LogUtils.D(TAG, "searchAllGroups e=" + e.toString());
+                return null;
+            }
+
+        } else {
+            LogUtils.D(TAG, "searchAllGroups" +
+                    " connect error!");
+        }
+        return null;
+    }
+
+    public List<RosterGroup> searchGroups(String query) {
+        LogUtils.D(TAG, "-----searchGroups query=" + query);
+        if ("9527".equalsIgnoreCase(query)) {
+            return searchAllGroups();
+        } else {
+            RosterGroup r = searchGroupsByName(query);
+            if (r == null) {
+                return null;
+            }
+            ArrayList<RosterGroup> list = new ArrayList<RosterGroup>();
+            list.add(r);
+            return list;
+        }
+    }
+
+    public RosterGroup searchGroupsByName(String groupName) {
+        LogUtils.D(TAG, "-----searchGroupsByName");
+        if (isConnected()) {
+            try {
+                RosterGroup group = Roster.getInstanceFor(xmppConnection).getGroup(groupName);
+                if (group != null) {
+                    LogUtils.D(TAG, "searchGroupsByName=" + group.getName());
+                }
+                return group;
+            } catch (Exception e) {
+                LogUtils.D(TAG, "searchGroupsByName e=" + e.toString());
+                return null;
+            }
+
+        } else {
+            LogUtils.D(TAG, "searchGroupsByName connect error!");
+        }
+        return null;
+    }
+
     public List<Account> searchUsers(String userName) {
         if (isConnected()) {
             LogUtils.D(TAG, "---searchUsers xmppConnection.isAuthenticated()=" + xmppConnection.isAuthenticated());

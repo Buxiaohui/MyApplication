@@ -184,9 +184,6 @@ public class SearchResultsActivity extends AppCompatActivity implements TabHost.
             case R.id.add:
                 ToastUtils.show("处理二级菜单add..");
                 break;
-            case R.id.test:
-                ToastUtils.show("处理二级菜单test..");
-                break;
             default:
                 break;
         }

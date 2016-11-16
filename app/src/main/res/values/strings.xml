@@ -36,4 +36,7 @@
     <string name="menu_more_add_group">加群</string>
     <string name="hint_search">开始搜索吧！</string>
 
+
+    <string name="hint_search_groups">输入 \'9525\' 可搜索所有群组</string>
+
 </resources>
