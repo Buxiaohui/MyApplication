@@ -27,6 +27,7 @@ import android.widget.TextView;
 
 import com.example.buxiaohui.myapplication.R;
 import com.example.buxiaohui.myapplication.ui.AddActivity;
+import com.example.buxiaohui.myapplication.utils.AccountUtils;
 import com.example.buxiaohui.myapplication.utils.LogUtils;
 import com.example.buxiaohui.myapplication.utils.ToastUtils;
 
@@ -167,6 +168,7 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
                 public boolean onQueryTextSubmit(String query) {
                     //TODO
                     LogUtils.D(TAG, "onQueryTextSubmit query=" + query);
+                    //AccountUtils.getInstance().searchUsersSync(query);
                     return false;
                 }
 
@@ -204,9 +206,10 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
                 break;
             case R.id.add:
                 ToastUtils.show("处理二级菜单add..");
-                AddActivity.open(this);
+                AddActivity.open(this,1);
                 break;
-            case R.id.test:
+            case R.id.add_group:
+                AddActivity.open(this,2);
                 //ToastUtils.show("处理二级菜单test..");
                 break;
             default:

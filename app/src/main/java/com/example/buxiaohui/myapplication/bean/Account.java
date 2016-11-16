@@ -5,12 +5,12 @@ package com.example.buxiaohui.myapplication.bean;
  */
 public class Account {
     private String userName;
-    private String name;
+    private String nikeName;
     private String email;
 
     public Account(String userName, String name, String email) {
         this.userName = userName;
-        this.name = name;
+        this.nikeName = name;
         this.email = email;
     }
 
@@ -22,12 +22,12 @@ public class Account {
         this.userName = userName;
     }
 
-    public String getName() {
-        return name;
+    public String getNikeName() {
+        return nikeName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNikeName(String nikeName) {
+        this.nikeName = nikeName;
     }
 
     public String getEmail() {

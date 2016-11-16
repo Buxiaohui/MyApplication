@@ -65,7 +65,6 @@ public class SearchResultsActivity extends AppCompatActivity implements TabHost.
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         init();
-        //startActivity(new Intent(MainActivity.this,MainActivityTest.class));
     }
 
     private void init() {

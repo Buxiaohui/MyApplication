@@ -28,8 +28,8 @@
                 android:id="@+id/add"
                 android:title="@string/menu_more_add"></item>
             <item
-                android:id="@+id/test"
-                android:title="@string/menu_more_test"></item>
+                android:id="@+id/add_group"
+                android:title="@string/menu_more_add_group"></item>
 
         </group>
     </item>

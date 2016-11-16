@@ -11,4 +11,8 @@ public class StringUtils {
     public static boolean isAvailable(Editable editable) {
         return (editable != null && !TextUtils.isEmpty(editable.toString()));
     }
+
+    public static String safe(String s) {
+        return "" + s;
+    }
 }

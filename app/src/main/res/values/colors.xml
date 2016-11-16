@@ -4,4 +4,6 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorStartPageBg">#0ac6f4</color>
+    <color name="colorDefault">#1296db</color>
+    <color name="colorDefault01">#d4237a</color>
 </resources>

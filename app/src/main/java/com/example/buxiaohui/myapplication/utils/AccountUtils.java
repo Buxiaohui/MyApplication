@@ -1,5 +1,7 @@
 package com.example.buxiaohui.myapplication.utils;
 
+import android.text.TextUtils;
+
 import com.example.buxiaohui.myapplication.Config;
 import com.example.buxiaohui.myapplication.bean.Account;
 import com.example.buxiaohui.myapplication.bean.RegisterBean;
@@ -68,7 +70,7 @@ public class AccountUtils {
     public static final String KEY_EMAIL = "email";
     private static final String TAG = "AccountUtils";
     private static AccountUtils instance;
-    private  XMPPTCPConnection xmppConnection;
+    private XMPPTCPConnection xmppConnection;
 
     public AccountUtils() {
         super();
@@ -394,15 +396,15 @@ public class AccountUtils {
     /**
      * 添加好友
      *
-     * @param user      用户账号
-     * @param nickName  用户昵称
-     * @param groupName 所属组名
+     * @param user     用户账号
+     * @param nickName 用户昵称
+     * @param groups   所属组名 可以为null
      * @return
      */
-    public boolean addFriend(String user, String nickName, String groupName) {
+    public boolean addFriend(String user, String nickName, String[] groups) {
         if (isConnected()) {
             try {
-                Roster.getInstanceFor(xmppConnection).createEntry(user, nickName, new String[]{groupName});
+                Roster.getInstanceFor(xmppConnection).createEntry(user, nickName, groups);
                 return true;
             } catch (SmackException.NotLoggedInException | SmackException.NoResponseException | XMPPException.XMPPErrorException
                     | SmackException.NotConnectedException e) {
@@ -518,17 +520,13 @@ public class AccountUtils {
     public List<Account> searchUsers(String userName) {
         if (isConnected()) {
             LogUtils.D(TAG, "---searchUsers xmppConnection.isAuthenticated()=" + xmppConnection.isAuthenticated());
-
-//            if (xmppConnection.isAuthenticated()) {
-//                login("test01","123");
-//            }
             List<Account> results = new ArrayList<Account>();
             try {
                 //new ServiceDiscoveryManager(xmppConnection);
                 UserSearchManager usm = new UserSearchManager(xmppConnection);
                 String serverDomain = "search." + xmppConnection.getServiceName();
                 Form searchForm = usm.getSearchForm(serverDomain);
-                LogUtils.D(TAG, "---searchUsers searchForm="+searchForm);
+                LogUtils.D(TAG, "---searchUsers searchForm=" + searchForm);
                 Form answerForm = searchForm.createAnswerForm();
                 //answerForm.setAnswer("Username", true);
                 answerForm.setAnswer("Username", true);
@@ -543,9 +541,12 @@ public class AccountUtils {
                     Account user = null;
                     while (it.hasNext()) {
                         row = it.next();
-                        String uName = row.getValues("Username").toString();
-                        String Name = row.getValues("Name").toString();
-                        String Email = row.getValues("Email").toString();
+                        String uName = row.getValues("Username") != null && row.getValues("Username").size() > 0 ? row.getValues("Username").get(0).toString() : "";
+                        String Name = row.getValues("Name") != null && row.getValues("Name").size() > 0 ? row.getValues("Name").get(0).toString() : "";
+                        String Email = row.getValues("Email") != null && row.getValues("Email").size() > 0 ? row.getValues("Email").get(0).toString() : "";
+                        if (TextUtils.isEmpty(uName) || TextUtils.isEmpty(Name)) {
+                            continue;
+                        }
                         user = new Account(uName, Name, Email);
                         results.add(user);
                     }
@@ -557,38 +558,6 @@ public class AccountUtils {
             }
         }
         return null;
-    }
-
-    public void searchUsersSync(final String userName) {
-        Observable o = Observable.create(new Observable.OnSubscribe<Object>() {
-            @Override
-            public void call(Subscriber<? super Object> subscriber) {
-
-                List<Account> list = searchUsers(userName);
-                subscriber.onNext(list);
-
-            }
-        }).subscribeOn(Schedulers.io());
-
-        Subscriber<List<Account>> s = new Subscriber<List<Account>>() {
-            @Override
-            public void onNext(List<Account> o) {
-                LogUtils.D(TAG, "---searchUsersSync onNext result=" + (o != null ? new Gson().toJson(o) : "null"));
-            }
-
-            @Override
-            public void onCompleted() {
-                LogUtils.D(TAG, "---onCompleted");
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                LogUtils.D(TAG, "---onError e:" + e.toString());
-
-            }
-        };
-        o.subscribe(s);
-
     }
 
     public void configure(ProviderManager pm) {
