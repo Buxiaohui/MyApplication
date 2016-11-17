@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 
 import com.example.buxiaohui.myapplication.utils.AccountUtils;
 import com.example.buxiaohui.myapplication.utils.LogUtils;
+import com.example.buxiaohui.myapplication.utils.LoginUtils;
 
 /**
  * Created by bxh on 11/17/16.
@@ -17,6 +18,8 @@ import com.example.buxiaohui.myapplication.utils.LogUtils;
 
 public class ConnectService extends Service {
     public static final String FULL_PATH = "com.example.buxiaohui.myapplication.service.ConnectService";
+    public static final String TAG = "ConnectService";
+    private boolean stopKeepConnect;
     private Messenger mMessenger = new Messenger(new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -24,9 +27,11 @@ public class ConnectService extends Service {
             switch (msg.what) {
                 case 1:
                     //TODO
+                    stopKeepConnect = true;
                     break;
                 case 2:
                     //TODO
+                    stopKeepConnect = false;
                     break;
             }
         }
@@ -47,15 +52,17 @@ public class ConnectService extends Service {
             @Override
             public void run() {
                 while (true) {
-                    LogUtils.D("ConnectService", "当前线程id=" + Thread.currentThread().getId());
-                    try {
-                        if (!AccountUtils.getInstance().isConnect()) {
-                            AccountUtils.getInstance().ensureConnect();
-                        }
+                    if (!stopKeepConnect) {
+                        LogUtils.D("ConnectService", "当前线程id=" + Thread.currentThread().getId());
+                        try {
+                            if (!AccountUtils.getInstance().isConnect()) {
+                                AccountUtils.getInstance().ensureConnect();
+                            }
 
-                        Thread.sleep(9000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                            Thread.sleep(9000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }

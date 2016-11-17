@@ -8,6 +8,7 @@ import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.Message;
 import android.os.Messenger;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v4.view.ViewPager;
@@ -36,6 +37,7 @@ import com.example.buxiaohui.myapplication.ui.AddGroupActivity;
 import com.example.buxiaohui.myapplication.ui.AddUserActivity;
 import com.example.buxiaohui.myapplication.utils.AccountUtils;
 import com.example.buxiaohui.myapplication.utils.LogUtils;
+import com.example.buxiaohui.myapplication.utils.LoginUtils;
 import com.example.buxiaohui.myapplication.utils.ToastUtils;
 
 import butterknife.BindView;
@@ -140,7 +142,12 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
                 ToastUtils.show("menu" + position);
                 if (position == 0) {
                     try {
+                        Message msg = Message.obtain(null,1);
+                        mMessenger.send(msg);
                         AccountUtils.getInstance().logout();
+                        AccountUtils.getInstance().disconnect();
+                        LoginUtils.setAutoLogin(false);
+                        LogUtils.D(TAG, "is sign out success = "+ (!LoginUtils.isAutoLogin()));
                     } catch (Exception e) {
                         LogUtils.D(TAG, "sign out fail");
                     }
