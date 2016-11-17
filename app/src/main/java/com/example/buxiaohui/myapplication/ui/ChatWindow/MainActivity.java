@@ -1,10 +1,14 @@
 package com.example.buxiaohui.myapplication.ui.ChatWindow;
 
 import android.app.SearchManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.Messenger;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -25,9 +29,12 @@ import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TextView;
 
+import com.example.buxiaohui.myapplication.Global;
 import com.example.buxiaohui.myapplication.R;
+import com.example.buxiaohui.myapplication.service.ConnectService;
 import com.example.buxiaohui.myapplication.ui.AddGroupActivity;
 import com.example.buxiaohui.myapplication.ui.AddUserActivity;
+import com.example.buxiaohui.myapplication.utils.AccountUtils;
 import com.example.buxiaohui.myapplication.utils.LogUtils;
 import com.example.buxiaohui.myapplication.utils.ToastUtils;
 
@@ -49,7 +56,19 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
     @BindView(android.R.id.tabhost)
     FragmentTabHost tabHost;
 
+    private Messenger mMessenger;
+    ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            mMessenger = new Messenger(service);
+        }
 
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            mMessenger = null;
+
+        }
+    };
     private int[] tabTitles = {R.string.tab_left, R.string.tab_right};
     private int[] tabIcons = {R.drawable.icon_bottom_message_tab, R.drawable.icon_bottom_contact_tab};
     private SearchView searchView;
@@ -70,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
     }
 
     private void init() {
+        bindService();
         initToolbar();
         initDrawer();
         initTabHost();
@@ -111,15 +131,36 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
         };
         mDrawerLayout.addDrawerListener(mDrawerToggle);
         listView.setBackgroundColor(Color.WHITE);
-        String[] menus = {"menu0", "menu1", "menu2", "menu3", "menu4", "menu5", "menu6", "menu7"};
+        String[] menus = {Global.APP_CONTEXT.getString(R.string.sign_out), "menu1", "menu2", "menu3", "menu4", "menu5", "menu6", "menu7"};
         listView.setAdapter(new ArrayAdapter(this, android.R.layout.simple_list_item_1, menus));
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //TODO
                 ToastUtils.show("menu" + position);
+                if (position == 0) {
+                    try {
+                        AccountUtils.getInstance().logout();
+                    } catch (Exception e) {
+                        LogUtils.D(TAG, "sign out fail");
+                    }
+
+                }
             }
         });
+    }
+
+    private void bindService() {
+        final Intent intent = new Intent();
+        intent.setComponent(new ComponentName(Global.PACKAGE_NAME, ConnectService.FULL_PATH));
+        LogUtils.D(TAG, "bind services ");
+        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+    }
+
+    private void unBindService() {
+        if (serviceConnection != null) {
+            unbindService(serviceConnection);
+        }
     }
 
     private void initTabHost() {
@@ -152,6 +193,12 @@ public class MainActivity extends AppCompatActivity implements TabHost.OnTabChan
     @Override
     public void onTabChanged(String tabId) {
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unBindService();
     }
 
     @Override

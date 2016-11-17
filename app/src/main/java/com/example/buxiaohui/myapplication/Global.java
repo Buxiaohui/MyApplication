@@ -9,6 +9,7 @@ import com.example.buxiaohui.myapplication.utils.SharePreferenceUtil;
  */
 public class Global {
     public static Context APP_CONTEXT;
+    public static final String PACKAGE_NAME = "com.example.buxiaohui.myapplication";
 
     public static boolean isRmberLogin(){
         return SharePreferenceUtil.getBoolean(SharePreferenceUtil.S_IS_REMBER_LOGIN,false);

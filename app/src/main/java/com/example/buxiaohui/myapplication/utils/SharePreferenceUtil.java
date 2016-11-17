@@ -13,6 +13,7 @@ import com.example.buxiaohui.myapplication.Global;
 public class SharePreferenceUtil {
     public final static String S_EVER_IN = "isEverInApp";
     public final static String S_IS_REMBER_LOGIN = "isRember";
+    public final static String S_IS_AUTO_LOGIN = "isAutoLogin";
     public final static String S_IS_LOGIN = "isLogin";
     public final static String S_USER_NAME = "userName";
     public final static String S_PASSWORD = "psw";

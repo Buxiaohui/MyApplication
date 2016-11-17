@@ -94,6 +94,10 @@ public class AccountUtils {
     }
 
     public XMPPTCPConnection getConnection() {
+        return xmppConnection;
+    }
+
+    public XMPPTCPConnection initConnection() {
 
         String server = Config.HOST_XAMPP;
         int port = Config.PORT_XAMPP;
@@ -111,17 +115,37 @@ public class AccountUtils {
         return connection;
     }
 
-    public void login(String userName, String psw) {
+    public int login(String userName, String psw) {
         if (isConnected()) {
             try {
-                xmppConnection.login(userName, psw);
+                if (!isKeepLoginState()) {
+                    xmppConnection.login(userName, psw);
+                }
+                return 0;
             } catch (SmackException | IOException | XMPPException e) {
                 e.printStackTrace();
-                LogUtils.D(TAG, "--connect error");
+                LogUtils.D(TAG, "--connect error e=" + e.toString());
+                return -1;
             }
         } else {
-            ToastUtils.show("not connected!");
+            LogUtils.D(TAG, "not connected!");
+            return -1;
         }
+
+    }
+
+    public void loginAsync(final String userName, final String psw, Subscriber<Integer> s) {
+        Observable o = Observable.create(new Observable.OnSubscribe<Integer>() {
+            @Override
+            public void call(Subscriber<? super Integer> subscriber) {
+                int result = AccountUtils.getInstance().login(userName, psw);
+                LogUtils.D(TAG, "loginAsync result=" + result);
+                subscriber.onNext(result);
+
+            }
+        }).subscribeOn(Schedulers.io());
+
+        o.subscribe(s);
 
     }
 
@@ -265,45 +289,30 @@ public class AccountUtils {
 
     }
 
-    public void loginAsync(final String userName, final String psw) {
-        Observable o = Observable.create(new Observable.OnSubscribe<Object>() {
-            @Override
-            public void call(Subscriber<? super Object> subscriber) {
-                login(userName, psw);
-                subscriber.onNext(null);
-
-            }
-        }).subscribeOn(Schedulers.io());
-
-        Subscriber<Object> s = new Subscriber<Object>() {
-            @Override
-            public void onNext(Object o) {
-                LogUtils.D(TAG, "---loginAsync onNext isAuthenticated = " + xmppConnection.isAuthenticated());
-                //searchUsersSync("bxh");
-            }
-
-            @Override
-            public void onCompleted() {
-                LogUtils.D(TAG, "-loginAsync--onCompleted");
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                LogUtils.D(TAG, "-loginAsync--onError e:" + e.toString());
-
-            }
-        };
-        o.subscribe(s);
-
-    }
 
     public void getContacts() {
-        //Roster roster = ((XMPPConnection)getConnection()).get
+        //Roster roster = ((XMPPConnection)initConnection()).get
+    }
+
+    public boolean isConnect() {
+        if (xmppConnection == null) {
+            return false;
+        }
+        return xmppConnection.isConnected();
+    }
+
+    public void ensureConnect() {
+        if (xmppConnection == null) {
+            xmppConnection = initConnection();
+        }
+        if (!isConnect()) {
+            connect(null);
+        }
     }
 
     public boolean isConnected() {
         if (xmppConnection == null) {
-            xmppConnection = getConnection();
+            xmppConnection = initConnection();
         }
         LogUtils.D(TAG, "isConnected()=" + xmppConnection.isConnected());
         if (!xmppConnection.isConnected()) {
@@ -580,6 +589,10 @@ public class AccountUtils {
             LogUtils.D(TAG, "searchGroupsByName connect error!");
         }
         return null;
+    }
+
+    public boolean isKeepLoginState() {
+        return xmppConnection != null && xmppConnection.isAuthenticated();
     }
 
     public List<Account> searchUsers(String userName) {

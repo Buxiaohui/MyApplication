@@ -9,6 +9,7 @@ import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,6 +27,9 @@ import com.example.buxiaohui.myapplication.utils.ToastUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.Observable;
+import rx.Subscriber;
+import rx.schedulers.Schedulers;
 
 /**
  * 注册账户
@@ -72,13 +76,35 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
     private void init() {
 
-        if (LoginUtils.isRemember() && !TextUtils.isEmpty(LoginUtils.getPsw()) && !TextUtils.isEmpty(LoginUtils.getUserName())) {
-            //TODO
-            //login
+        if (!TextUtils.isEmpty(LoginUtils.getPsw()) && !TextUtils.isEmpty(LoginUtils.getUserName())) {
+            LogUtils.D(TAG, "---init set name & psw");
+            mUserName.setText(LoginUtils.getUserName());
+            mPsW.setText(LoginUtils.getPsw());
 
         }
         //just for test
         //test();
+        mRememberCheckBox.setChecked(LoginUtils.isRemember());
+        mRememberCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                if (isChecked && StringUtils.isAvailable(mPsW.getText()) && StringUtils.isAvailable(mUserName.getText())) {
+//                    LoginUtils.saveLogin(mUserName.getText().toString(), mPsW.getText().toString());
+//                    LoginUtils.saveremember(true);
+//                } else {
+//                    LoginUtils.saveremember(false);
+//                    LoginUtils.saveLogin("", "");
+//                }
+                LoginUtils.saveremember(isChecked);
+            }
+        });
+        mAutoCheckBox.setChecked(LoginUtils.isAutoLogin());
+        mAutoCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                LoginUtils.setAutoLogin(isChecked);
+            }
+        });
 
     }
 
@@ -98,8 +124,48 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     @OnClick(R.id.id_login)
     public void login() {
         if (StringUtils.isAvailable(mPsW.getText()) && StringUtils.isAvailable(mUserName.getText())) {
-            AccountUtils.getInstance().loginAsync(mUserName.getText().toString(), mPsW.getText().toString());
+            loginAsync(mUserName.getText().toString(), mPsW.getText().toString());
+            if (mRememberCheckBox.isChecked()) {
+                LogUtils.D(TAG, "---login save name & psw");
+                LoginUtils.saveLogin(mUserName.getText().toString(), mPsW.getText().toString());
+            } else {
+                LoginUtils.saveLogin("", "");
+            }
         }
+    }
+
+    public void loginAsync(final String userName, final String psw) {
+        Observable o = Observable.create(new Observable.OnSubscribe<Integer>() {
+            @Override
+            public void call(Subscriber<? super Integer> subscriber) {
+                int result = AccountUtils.getInstance().login(userName, psw);
+                subscriber.onNext(result);
+
+            }
+        }).subscribeOn(Schedulers.io());
+
+        Subscriber<Integer> s = new Subscriber<Integer>() {
+            @Override
+            public void onNext(Integer o) {
+                LogUtils.D(TAG, "---login onNext result=" + (o != null ? o.intValue() : -1));
+                if (o != null && o.intValue() != -1) {
+                    MainActivity.open(LoginActivity.this);
+                    finish();
+                }
+            }
+
+            @Override
+            public void onCompleted() {
+                LogUtils.D(TAG, "-loginAsync--onCompleted");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                LogUtils.D(TAG, "-loginAsync--onError e:" + e.toString());
+
+            }
+        };
+        o.subscribe(s);
 
     }
 
