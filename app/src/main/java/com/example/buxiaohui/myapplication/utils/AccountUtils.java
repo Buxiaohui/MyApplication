@@ -6,6 +6,7 @@ import com.example.buxiaohui.myapplication.Config;
 import com.example.buxiaohui.myapplication.bean.Account;
 import com.example.buxiaohui.myapplication.bean.RegisterBean;
 import com.example.buxiaohui.myapplication.callback.AccountListener;
+import com.example.buxiaohui.myapplication.ui.add.RequestHelper;
 import com.google.gson.Gson;
 
 import org.jivesoftware.smack.ConnectionConfiguration;
@@ -83,6 +84,10 @@ public class AccountUtils {
         return instance;
     }
 
+    public void registerListener() {
+        RequestHelper.registerListener(xmppConnection);
+    }
+
     public void changePsw(String newPsw, AccountListener listener) {
         try {
             AccountManager.getInstance(xmppConnection).changePassword(newPsw);
@@ -112,6 +117,7 @@ public class AccountUtils {
         XMPPTCPConnection connection = new XMPPTCPConnection(builder.build());
         ProviderManager pm = new ProviderManager();
         configure(pm);
+        //RequestHelper.registerListener(connection);
         return connection;
     }
 
@@ -395,8 +401,15 @@ public class AccountUtils {
      * 获取指定账号的好友信息
      */
     public RosterEntry getFriend(String user) {
+        LogUtils.D(TAG, "getFriend queryStr=" + user);
         if (isConnected()) {
-            return Roster.getInstanceFor(xmppConnection).getEntry(user);
+            try {
+                return Roster.getInstanceFor(xmppConnection).getEntry(user);
+            } catch (Exception e) {
+                LogUtils.D(TAG, "getFriend e=" + e.toString());
+                return null;
+            }
+
         }
         throw new NullPointerException("服务器连接失败，请先连接服务器");
     }
@@ -411,12 +424,14 @@ public class AccountUtils {
      * @return
      */
     public boolean addFriend(String user, String nickName, String[] groups) {
+        LogUtils.D(TAG, "addFriend user=" + user + "--nikeName=" + nickName + "--groups=" + groups);
         if (isConnected()) {
             try {
-                Roster.getInstanceFor(xmppConnection).createEntry(user, nickName, groups);
+                Roster.getInstanceFor(xmppConnection).createEntry(user+"@"+Config.SERVER_NAME_XAMPP, nickName, groups);
                 return true;
             } catch (SmackException.NotLoggedInException | SmackException.NoResponseException | XMPPException.XMPPErrorException
                     | SmackException.NotConnectedException e) {
+                LogUtils.D(TAG, "addFriend e=" + e.toString());
                 return false;
             }
         }

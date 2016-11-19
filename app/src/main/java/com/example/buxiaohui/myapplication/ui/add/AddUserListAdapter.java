@@ -1,5 +1,6 @@
-package com.example.buxiaohui.myapplication.ui;
+package com.example.buxiaohui.myapplication.ui.add;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +46,7 @@ public class AddUserListAdapter extends AddAdapter<Account> {
     }
 
     public class AddUserHolder extends AddBaseHolder<Account> {
+        View itemView;
         ImageView userIcon;
         TextView name;
         TextView desc;
@@ -52,6 +54,7 @@ public class AddUserListAdapter extends AddAdapter<Account> {
 
         public AddUserHolder(View itemView) {
             super(itemView);
+            this.itemView = itemView;
             userIcon = (ImageView) itemView.findViewById(R.id.img);
             name = (TextView) itemView.findViewById(R.id.name);
             desc = (TextView) itemView.findViewById(R.id.desc);
@@ -74,6 +77,16 @@ public class AddUserListAdapter extends AddAdapter<Account> {
                             ToastUtils.show("will add" + "--" + account1.getUserName());
                             viewInterface.addUser(account1);
                         }
+                    }
+                }
+            });
+            itemView.setTag(account);
+            itemView.setTag(R.id.id_first,position);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(v.getTag()!=null && !TextUtils.isEmpty(((Account)v.getTag()).getUserName())){
+                        UserDetailActivity.open(v.getContext(),((Account)v.getTag()).getUserName());
                     }
                 }
             });

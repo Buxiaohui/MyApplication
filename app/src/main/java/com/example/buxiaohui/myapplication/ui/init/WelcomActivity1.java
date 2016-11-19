@@ -1,23 +1,13 @@
-package com.example.buxiaohui.myapplication.ui;
+package com.example.buxiaohui.myapplication.ui.init;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.example.buxiaohui.myapplication.R;
-
-import java.io.FileDescriptor;
-import java.io.PrintWriter;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

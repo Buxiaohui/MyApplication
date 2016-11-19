@@ -1,4 +1,4 @@
-package com.example.buxiaohui.myapplication.ui.ChatWindow;
+package com.example.buxiaohui.myapplication.ui.home;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

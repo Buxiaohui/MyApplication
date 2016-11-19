@@ -1,4 +1,4 @@
-package com.example.buxiaohui.myapplication.ui;
+package com.example.buxiaohui.myapplication.ui.init;
 
 import android.app.Fragment;
 import android.os.Bundle;

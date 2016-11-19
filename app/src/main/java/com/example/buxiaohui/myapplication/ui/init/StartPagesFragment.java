@@ -1,8 +1,7 @@
-package com.example.buxiaohui.myapplication.ui;
+package com.example.buxiaohui.myapplication.ui.init;
 
 import android.app.Fragment;
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -13,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.buxiaohui.myapplication.R;
+import com.example.buxiaohui.myapplication.ui.init.LoginActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

@@ -1,4 +1,4 @@
-package com.example.buxiaohui.myapplication.ui;
+package com.example.buxiaohui.myapplication.ui.init;
 
 import android.content.ComponentName;
 import android.content.Intent;
@@ -10,7 +10,8 @@ import com.example.buxiaohui.myapplication.Config;
 import com.example.buxiaohui.myapplication.Global;
 import com.example.buxiaohui.myapplication.R;
 import com.example.buxiaohui.myapplication.service.ConnectService;
-import com.example.buxiaohui.myapplication.ui.ChatWindow.MainActivity;
+import com.example.buxiaohui.myapplication.ui.BaseActivity;
+import com.example.buxiaohui.myapplication.ui.home.MainActivity;
 import com.example.buxiaohui.myapplication.utils.AccountUtils;
 import com.example.buxiaohui.myapplication.utils.LogUtils;
 import com.example.buxiaohui.myapplication.utils.LoginUtils;

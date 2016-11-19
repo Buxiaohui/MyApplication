@@ -1,4 +1,4 @@
-package com.example.buxiaohui.myapplication.ui.ChatWindow;
+package com.example.buxiaohui.myapplication.ui.home;
 
 import android.app.SearchManager;
 import android.content.ComponentName;
@@ -33,8 +33,8 @@ import android.widget.TextView;
 import com.example.buxiaohui.myapplication.Global;
 import com.example.buxiaohui.myapplication.R;
 import com.example.buxiaohui.myapplication.service.ConnectService;
-import com.example.buxiaohui.myapplication.ui.AddGroupActivity;
-import com.example.buxiaohui.myapplication.ui.AddUserActivity;
+import com.example.buxiaohui.myapplication.ui.add.AddGroupActivity;
+import com.example.buxiaohui.myapplication.ui.add.AddUserActivity;
 import com.example.buxiaohui.myapplication.utils.AccountUtils;
 import com.example.buxiaohui.myapplication.utils.LogUtils;
 import com.example.buxiaohui.myapplication.utils.LoginUtils;

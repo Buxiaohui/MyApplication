@@ -1,4 +1,4 @@
-package com.example.buxiaohui.myapplication.ui.ChatWindow;
+package com.example.buxiaohui.myapplication.ui.home;
 
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;

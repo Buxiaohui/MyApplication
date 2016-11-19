@@ -1,4 +1,4 @@
-package com.example.buxiaohui.myapplication.ui;
+package com.example.buxiaohui.myapplication.ui.add;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

@@ -1,8 +1,7 @@
-package com.example.buxiaohui.myapplication.ui;
+package com.example.buxiaohui.myapplication.ui.add;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,9 +10,6 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 
 import com.example.buxiaohui.myapplication.R;
-import com.example.buxiaohui.myapplication.bean.Account;
-import com.example.buxiaohui.myapplication.contract.AddUserContract;
-import com.example.buxiaohui.myapplication.utils.AccountUtils;
 
 import java.util.ArrayList;
 import java.util.List;

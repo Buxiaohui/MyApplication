@@ -1,4 +1,4 @@
-package com.example.buxiaohui.myapplication.ui;
+package com.example.buxiaohui.myapplication.ui.add;
 
 import android.app.SearchManager;
 import android.content.Context;
@@ -26,8 +26,8 @@ import android.widget.TabHost;
 import android.widget.TextView;
 
 import com.example.buxiaohui.myapplication.R;
-import com.example.buxiaohui.myapplication.ui.ChatWindow.ContctListFragment;
-import com.example.buxiaohui.myapplication.ui.ChatWindow.MessageListFragment;
+import com.example.buxiaohui.myapplication.ui.home.ContctListFragment;
+import com.example.buxiaohui.myapplication.ui.home.MessageListFragment;
 import com.example.buxiaohui.myapplication.utils.LogUtils;
 import com.example.buxiaohui.myapplication.utils.ToastUtils;
 

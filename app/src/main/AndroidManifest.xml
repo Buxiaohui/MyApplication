@@ -18,7 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/BaseTheme">
         <activity
-            android:name=".ui.SplashActivity"
+            android:name=".ui.init.SplashActivity"
             android:theme="@style/BaseTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,21 +31,21 @@
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme"></activity>
         <activity
-            android:name=".ui.WelcomActivity1"
+            android:name=".ui.init.WelcomActivity1"
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme"></activity>
         <activity
-            android:name=".ui.ChatWindow.MainActivity"
+            android:name=".ui.home.MainActivity"
             android:screenOrientation="portrait"
             android:launchMode="singleInstance"
             android:theme="@style/BaseTheme"
             android:windowSoftInputMode="adjustPan"></activity>
         <activity
-            android:name=".ui.LoginActivity"
+            android:name=".ui.init.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/BackTheme"></activity>
         <activity
-            android:name=".ui.RegisterActivity"
+            android:name=".ui.init.RegisterActivity"
             android:screenOrientation="portrait"
             android:theme="@style/BackTheme"></activity>
         <activity
@@ -53,18 +53,22 @@
             android:screenOrientation="portrait"
             android:theme="@style/PreferenceTheme"></activity>
         <activity
-            android:name=".ui.ChatWindow.MainActivityTest"
+            android:name=".ui.home.MainActivityTest"
             android:screenOrientation="portrait"
             android:theme="@style/PreferenceTheme"></activity>
         <activity
-            android:name=".ui.AddUserActivity"
+            android:name=".ui.add.AddUserActivity"
             android:screenOrientation="portrait"
             android:theme="@style/BackTheme"></activity>
         <activity
-            android:name=".ui.AddGroupActivity"
+            android:name=".ui.add.AddGroupActivity"
             android:screenOrientation="portrait"
             android:theme="@style/BackTheme"></activity>
-        <activity android:name=".ui.SearchResultsActivity">
+        <activity
+            android:name=".ui.add.UserDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/BackTheme"></activity>
+        <activity android:name=".ui.add.SearchResultsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>

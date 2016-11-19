@@ -1,4 +1,4 @@
-package com.example.buxiaohui.myapplication.ui;
+package com.example.buxiaohui.myapplication.ui.add;
 
 import android.view.LayoutInflater;
 import android.view.View;

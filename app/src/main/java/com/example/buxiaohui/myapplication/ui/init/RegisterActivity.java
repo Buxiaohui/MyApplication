@@ -1,4 +1,4 @@
-package com.example.buxiaohui.myapplication.ui;
+package com.example.buxiaohui.myapplication.ui.init;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,7 +11,8 @@ import android.widget.TextView;
 
 import com.example.buxiaohui.myapplication.R;
 import com.example.buxiaohui.myapplication.bean.RegisterBean;
-import com.example.buxiaohui.myapplication.ui.ChatWindow.MainActivity;
+import com.example.buxiaohui.myapplication.ui.BaseActivity;
+import com.example.buxiaohui.myapplication.ui.home.MainActivity;
 import com.example.buxiaohui.myapplication.utils.AccountUtils;
 import com.example.buxiaohui.myapplication.utils.LogUtils;
 import com.example.buxiaohui.myapplication.utils.StringUtils;

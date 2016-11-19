@@ -10,7 +10,6 @@ import android.support.annotation.Nullable;
 
 import com.example.buxiaohui.myapplication.utils.AccountUtils;
 import com.example.buxiaohui.myapplication.utils.LogUtils;
-import com.example.buxiaohui.myapplication.utils.LoginUtils;
 
 /**
  * Created by bxh on 11/17/16.
@@ -52,18 +51,22 @@ public class ConnectService extends Service {
             @Override
             public void run() {
                 while (true) {
-                    if (!stopKeepConnect) {
-                        LogUtils.D("ConnectService", "当前线程id=" + Thread.currentThread().getId());
-                        try {
-                            if (!AccountUtils.getInstance().isConnect()) {
-                                AccountUtils.getInstance().ensureConnect();
+                    LogUtils.D("ConnectService", "当前线程id=" + Thread.currentThread().getId());
+                    try {
+                        if (!AccountUtils.getInstance().isConnect()) {
+                            if (!stopKeepConnect) {
+                                //AccountUtils.getInstance().ensureConnect();
+                            } else {
+                                //TODO
                             }
 
-                            Thread.sleep(9000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
                         }
+
+                        Thread.sleep(9000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
+
                 }
             }
         }).start();

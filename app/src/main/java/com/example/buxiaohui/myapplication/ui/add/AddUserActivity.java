@@ -1,4 +1,4 @@
-package com.example.buxiaohui.myapplication.ui;
+package com.example.buxiaohui.myapplication.ui.add;
 
 import android.content.Context;
 import android.content.Intent;
@@ -24,6 +24,7 @@ import rx.schedulers.Schedulers;
 public class AddUserActivity extends AddActivity<Account> implements AddUserContract.ViewInterface {
     private final static String TAG = "AddUserActivity";
     AddUserListAdapter adapter;
+
     public static void open(Context context) {
         if (context != null) {
             context.startActivity(new Intent(context, AddUserActivity.class));
@@ -50,7 +51,7 @@ public class AddUserActivity extends AddActivity<Account> implements AddUserCont
 
     @Override
     public AddAdapter initAdapter() {
-        adapter =  new AddUserListAdapter(list);
+        adapter = new AddUserListAdapter(list);
         adapter.setView(this);
         return adapter;
     }
@@ -105,7 +106,7 @@ public class AddUserActivity extends AddActivity<Account> implements AddUserCont
             @Override
             public Boolean call(Account s) {
 
-                return AccountUtils.getInstance().addFriend(s.getUserName(), s.getUserName(), null);
+                return AccountUtils.getInstance().addFriend(s.getUserName(), s.getNikeName(), null);
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(new Subscriber<Boolean>() {
@@ -122,7 +123,8 @@ public class AddUserActivity extends AddActivity<Account> implements AddUserCont
             @Override
             public void onNext(Boolean result) {
                 //TODO
-                ToastUtils.show("add friend success " + String.valueOf(result));
+                ToastUtils.show("add friend success " + (result != null ? String.valueOf(result) : "false"));
+
             }
         });
     }
