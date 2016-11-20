@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@android:color/holo_green_light">
+
+        <TextView
+            android:id="@+id/tab_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_eye_default"
+            android:gravity="center"
+            android:padding="2dp"
+            android:text="@string/tab_left"
+            android:visibility="gone" />
+
+    </android.support.v7.widget.Toolbar>
+
+    <RelativeLayout
+        android:id="@+id/chat_bottom_linear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#DDDDDD"
+        android:gravity="center_vertical"
+        android:paddingBottom="7dip"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="7dip">
+
+        <ImageView
+            android:id="@+id/chat_bottom_look"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/smile_64"
+            android:scaleType="centerCrop" />
+
+        <ImageView
+            android:id="@+id/chat_bottom_add"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/chat_bottom_look"
+            android:background="@drawable/icon_add_user_button"
+            android:scaleType="centerCrop" />
+
+
+        <Button
+            android:id="@+id/chat_bottom_sendbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="26dip"
+            android:layout_alignParentRight="true"
+            android:background="@color/colorDefault"
+            android:text="@string/send"
+            android:textColor="@android:color/white" />"
+
+        <EditText
+            android:id="@+id/id_input"
+            android:layout_width="match_parent"
+            android:layout_height="32dip"
+            android:layout_marginLeft="5dip"
+            android:layout_marginRight="7dip"
+            android:layout_toLeftOf="@id/chat_bottom_sendbutton"
+            android:layout_toRightOf="@id/chat_bottom_add" />
+
+
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/chat_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/chat_bottom_linear"
+        android:layout_below="@id/toolbar"
+        android:background="#f0f0f0"
+        android:divider="#aaaaaa"
+        android:dividerHeight="0px"
+        android:fadingEdge="none"></ListView>
+
+
+</RelativeLayout>

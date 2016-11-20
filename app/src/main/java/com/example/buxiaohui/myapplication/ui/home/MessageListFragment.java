@@ -1,8 +1,13 @@
 package com.example.buxiaohui.myapplication.ui.home;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,7 +15,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.buxiaohui.myapplication.Global;
 import com.example.buxiaohui.myapplication.R;
+import com.example.buxiaohui.myapplication.utils.LogUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -20,6 +27,14 @@ import butterknife.ButterKnife;
  */
 
 public class MessageListFragment extends Fragment {
+    private static final String TAG = "ContctListFragment";
+
+    BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            LogUtils.D(TAG, "--onReceive action=" + intent.getAction());
+        }
+    };
     @BindView(R.id.refresh_container)
     SwipeRefreshLayout swipeRefreshLayout;
 
@@ -40,7 +55,7 @@ public class MessageListFragment extends Fragment {
     }
 
     private void init() {
-        LinearLayoutManager manager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,true);
+        LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, true);
         manager.setSmoothScrollbarEnabled(true);
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(new MessageListAdapter());
@@ -59,11 +74,13 @@ public class MessageListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        registerReciver();
     }
 
     @Override
     public void onPause() {
         super.onPause();
+        unRegister();
     }
 
     @Override
@@ -79,5 +96,17 @@ public class MessageListFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+    }
+
+    private void registerReciver() {
+        LogUtils.D(TAG, "--registerReciver");
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Global.REQUEST_ACTION);
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(receiver, intentFilter);
+    }
+
+    private void unRegister() {
+        LogUtils.D(TAG, "--unRegister");
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(receiver);
     }
 }

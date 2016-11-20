@@ -36,8 +36,8 @@
             android:theme="@style/BaseTheme"></activity>
         <activity
             android:name=".ui.home.MainActivity"
-            android:screenOrientation="portrait"
             android:launchMode="singleInstance"
+            android:screenOrientation="portrait"
             android:theme="@style/BaseTheme"
             android:windowSoftInputMode="adjustPan"></activity>
         <activity
@@ -66,6 +66,10 @@
             android:theme="@style/BackTheme"></activity>
         <activity
             android:name=".ui.add.UserDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/BackTheme"></activity>
+        <activity
+            android:name=".ui.Chat.TalkActivity"
             android:screenOrientation="portrait"
             android:theme="@style/BackTheme"></activity>
         <activity android:name=".ui.add.SearchResultsActivity">

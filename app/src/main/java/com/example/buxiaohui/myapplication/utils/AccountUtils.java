@@ -364,39 +364,21 @@ public class AccountUtils {
         }
         throw new NullPointerException("服务器连接失败，请先连接服务器");
     }
-
-    public void getAllFriendsSync() {
-        Observable o = Observable.create(new Observable.OnSubscribe<Set>() {
-            @Override
-            public void call(Subscriber<? super Set> subscriber) {
-                Set s = getAllFriends();
-                LogUtils.D(TAG, "---getAllFriendsSync call result=" + new Gson().toJson(s));
-                subscriber.onNext(s);
-                subscriber.onCompleted();
+    public List<RosterEntry> getAllFriendsList() {
+        if (isConnected()) {
+            Set<RosterEntry> set = Roster.getInstanceFor(xmppConnection).getEntries();
+            if(set!=null && set.size()>0){
+                Iterator<RosterEntry> iterator = set.iterator();
+                List<RosterEntry> rosterEntries = new ArrayList<RosterEntry>();
+                while (iterator.hasNext()){
+                       rosterEntries.add(iterator.next());
+                }
+                return rosterEntries;
             }
-        }).subscribeOn(Schedulers.io());
-
-        Subscriber<Set> s = new Subscriber<Set>() {
-            @Override
-            public void onNext(Set o) {
-                LogUtils.D(TAG, "---getAllFriendsSync onNext result=" + new Gson().toJson(o));
-            }
-
-            @Override
-            public void onCompleted() {
-                LogUtils.D(TAG, "---getAllFriendsSync onCompleted");
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                LogUtils.D(TAG, "---getAllFriendsSync onError e:" + e.toString());
-
-            }
-        };
-        o.subscribe(s);
-
+            return null;
+        }
+        throw new NullPointerException("服务器连接失败，请先连接服务器");
     }
-
     /**
      * 获取指定账号的好友信息
      */
@@ -413,7 +395,21 @@ public class AccountUtils {
         }
         throw new NullPointerException("服务器连接失败，请先连接服务器");
     }
+    /**
+     * 获得所有的联系人列表
+     *
+     * @return
+     */
+    public static List<Account> getNoGroupUserList(Roster roster) {
+        List<Account> userList = new ArrayList<Account>();
 
+        // 服务器的用户信息改变后，不会通知到unfiledEntries
+        for (RosterEntry entry : roster.getUnfiledEntries()) {
+            userList.add(Account.copy(entry));
+        }
+
+        return userList;
+    }
 
     /**
      * 添加好友

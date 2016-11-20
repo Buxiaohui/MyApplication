@@ -1,5 +1,7 @@
 package com.example.buxiaohui.myapplication.bean;
 
+import org.jivesoftware.smack.roster.RosterEntry;
+
 /**
  * Created by buxiaohui on 12/10/2016.
  */
@@ -36,6 +38,10 @@ public class Account {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public static  Account copy(RosterEntry entry){
+        return new Account(entry.getUser(),entry.getName(),"");
     }
 }
 

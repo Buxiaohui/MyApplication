@@ -38,6 +38,7 @@
 
 
     <string name="hint_search_groups">输入 \'9525\' 可搜索所有群组</string>
+    <string name="send">发送</string>
 
 
 </resources>
