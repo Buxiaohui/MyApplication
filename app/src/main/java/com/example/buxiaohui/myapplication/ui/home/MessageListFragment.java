@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,7 +16,13 @@ import android.view.ViewGroup;
 
 import com.example.buxiaohui.myapplication.Global;
 import com.example.buxiaohui.myapplication.R;
+import com.example.buxiaohui.myapplication.bean.MsgBean;
+import com.example.buxiaohui.myapplication.ui.BaseFragment;
 import com.example.buxiaohui.myapplication.utils.LogUtils;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,9 +31,8 @@ import butterknife.ButterKnife;
  * Created by bxh on 11/11/16.
  */
 
-public class MessageListFragment extends Fragment {
+public class MessageListFragment extends BaseFragment {
     private static final String TAG = "ContctListFragment";
-
     BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -37,9 +41,9 @@ public class MessageListFragment extends Fragment {
     };
     @BindView(R.id.refresh_container)
     SwipeRefreshLayout swipeRefreshLayout;
-
     @BindView(android.R.id.list)
     RecyclerView recyclerView;
+    private List<MsgBean> mMsgList;
 
     @Nullable
     @Override
@@ -55,6 +59,7 @@ public class MessageListFragment extends Fragment {
     }
 
     private void init() {
+        mMsgList = new ArrayList<MsgBean>();
         LinearLayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, true);
         manager.setSmoothScrollbarEnabled(true);
         recyclerView.setLayoutManager(manager);
@@ -74,13 +79,50 @@ public class MessageListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        registerReciver();
+        //registerReciver();
+    }
+
+    @Override
+    protected void addFilter(IntentFilter filter) {
+        super.addFilter(filter);
+        filter.addAction(Global.REQUEST_ACTION);
+    }
+
+    @Override
+    protected void onReceive(Context context, Intent intent) {
+        super.onReceive(context, intent);
+        if (intent != null && Global.REQUEST_ACTION.equalsIgnoreCase(intent.getAction())) {
+            MsgBean msgBean = new MsgBean();
+            msgBean.setType(intent.getIntExtra("type", 0));
+            msgBean.setContent(intent.getStringExtra("content"));
+            msgBean.setFrom(intent.getStringExtra("from"));
+            msgBean.setSelf(false);
+            SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd    hh:mm:ss");
+            String date = sDateFormat.format(new java.util.Date());
+            msgBean.setTime(date);
+            mMsgList.add(msgBean);
+            refresh();
+
+        }
+    }
+
+    private MessageListAdapter getAdapter() {
+        if (recyclerView == null) {
+            return null;
+        }
+        return (MessageListAdapter) recyclerView.getAdapter();
+    }
+
+    private void refresh() {
+        if (getAdapter() != null) {
+            getAdapter().notifyDataSetChanged();
+        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        unRegister();
+        //unRegister();
     }
 
     @Override
